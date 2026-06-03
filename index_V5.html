@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang='ar' dir='rtl'>
+<head>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>مدير محمد المالي V5</title>
+<style>
+body{font-family:Arial;background:#f5f6f8;padding:10px;max-width:1200px;margin:auto}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.card,.box{background:#fff;border-radius:12px;padding:12px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+input,select,button{width:100%;padding:8px;margin:4px 0}
+table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:6px;text-align:center}
+.good{color:green}.warn{color:orange}.bad{color:red}
+@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<h2>💼 مدير محمد المالي V5</h2>
+
+<div class="cards">
+<div class="card">📈 الدخل<br><b id="income">0</b></div>
+<div class="card">💸 المصروفات<br><b id="expenses">0</b></div>
+<div class="card">💰 المتبقي<br><b id="remain">0</b></div>
+<div class="card">🏦 القرض<br><b id="loanView">0</b></div>
+<div class="card">🚦 الحالة<br><b id="status">-</b></div>
+</div>
+
+<div class="box">
+<select id="month"></select>
+<input id="salary" type="number" value="5900" placeholder="💼 الراتب">
+<input id="commission" type="number" placeholder="💰 العمولة">
+<input id="education" type="number" placeholder="🎓 التعليم">
+<input id="fuel" type="number" placeholder="⛽ البنزين">
+<input id="groceries" type="number" placeholder="🛒 المقاضي">
+<input id="restaurants" type="number" placeholder="🍔 المطاعم">
+<input id="other" type="number" placeholder="📦 أخرى">
+<input id="loanBalance" type="number" value="19752" placeholder="🏦 رصيد القرض الحالي">
+<input id="extraLoan" type="number" placeholder="🚀 السداد الإضافي">
+<input id="saving" type="number" placeholder="🎯 الادخار">
+<button onclick="saveMonth()">💾 حفظ الشهر</button>
+<div id="msg"></div>
+</div>
+
+<div class="box">
+<h3>🎯 إجمالي الادخار السنوي: <span id="annual">0</span></h3>
+</div>
+
+<div class="box">
+<table>
+<thead><tr><th>الشهر</th><th>العمولة</th><th>المصروفات</th><th>الادخار</th><th>السداد</th><th>القرض</th></tr></thead>
+<tbody id="tbl"></tbody>
+</table>
+</div>
+
+<script>
+const months=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+const m=document.getElementById('month');
+months.forEach(x=>{let o=document.createElement('option');o.value=x;o.text=x;m.add(o)});
+m.value=months[new Date().getMonth()];
+
+function saveMonth(){
+ const d={salary:+salary.value||5900,commission:+commission.value||0,education:+education.value||0,fuel:+fuel.value||0,groceries:+groceries.value||0,restaurants:+restaurants.value||0,other:+other.value||0,loanBalance:+loanBalance.value||0,extraLoan:+extraLoan.value||0,saving:+saving.value||0};
+ localStorage.setItem('mf_'+m.value,JSON.stringify(d));
+ msg.innerHTML="✅ تم الحفظ بنجاح";
+ ["commission","education","fuel","groceries","restaurants","other","extraLoan","saving"].forEach(id=>document.getElementById(id).value="");
+ refresh();
+}
+
+function loadMonth(){
+ let d=JSON.parse(localStorage.getItem('mf_'+m.value)||"{}");
+ ["salary","commission","education","fuel","groceries","restaurants","other","loanBalance","extraLoan","saving"].forEach(id=>{
+   if(d[id]!=null) document.getElementById(id).value=d[id];
+ });
+ refresh();
+}
+
+function refresh(){
+ let annual=0, rows="";
+ months.forEach(mon=>{
+  let d=JSON.parse(localStorage.getItem('mf_'+mon)||"{}");
+  let exp=(+d.education||0)+(+d.fuel||0)+(+d.groceries||0)+(+d.restaurants||0)+(+d.other||0);
+  let loan=((+d.loanBalance||0)-1646-(+d.extraLoan||0));
+  annual+=(+d.saving||0);
+  rows+=`<tr><td>${mon}</td><td>${d.commission||0}</td><td>${exp}</td><td>${d.saving||0}</td><td>${d.extraLoan||0}</td><td>${loan>0?loan:0}</td></tr>`;
+ });
+ tbl.innerHTML=rows;
+ annual.innerText=annual;
+
+ let d=JSON.parse(localStorage.getItem('mf_'+m.value)||"{}");
+ let inc=(+d.salary||5900)+(+d.commission||0);
+ let exp=(+d.education||0)+(+d.fuel||0)+(+d.groceries||0)+(+d.restaurants||0)+(+d.other||0);
+ let rem=inc-exp-(+d.saving||0)-1646-(+d.extraLoan||0);
+ let loan=((+d.loanBalance||0)-1646-(+d.extraLoan||0));
+
+ income.innerText=inc;
+ expenses.innerText=exp;
+ remain.innerText=rem;
+ loanView.innerText=loan>0?loan:0;
+
+ let ratio=inc?((+d.saving||0)/inc)*100:0;
+ if(ratio>=30){status.innerHTML='<span class="good">🟢 ممتاز</span>';}
+ else if(ratio>=15){status.innerHTML='<span class="warn">🟡 جيد</span>';}
+ else{status.innerHTML='<span class="bad">🔴 يحتاج ضبط</span>';}
+}
+m.onchange=loadMonth;
+loadMonth();
+</script>
+</body></html>
