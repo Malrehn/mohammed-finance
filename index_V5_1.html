@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>مدير محمد المالي V5.1</title>
+<style>
+body{font-family:Arial;max-width:1200px;margin:auto;padding:10px;background:#f4f6f8}
+.card{background:#fff;border-radius:10px;padding:10px;margin:8px 0}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+input,select,button{padding:8px;margin:4px;width:100%}
+table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:6px;text-align:center}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<h2>💼 مدير محمد المالي V5.1</h2>
+
+<div class="grid">
+<div class="card">💰 المتبقي<br><b id="remain">0</b></div>
+<div class="card">🏦 القرض<br><b id="loanOut">0</b></div>
+<div class="card">🎯 الادخار السنوي<br><b id="annual">0</b></div>
+<div class="card">🚦 الحالة<br><b id="status">-</b></div>
+</div>
+
+<div class="card">
+<h3>⚙️ الإعدادات</h3>
+<input id="baseLoan" type="number" value="19752" placeholder="رصيد القرض الابتدائي">
+<input id="loanPay" type="number" value="1646" placeholder="القسط الشهري">
+<input id="salary" type="number" value="5900" placeholder="الراتب">
+<button onclick="saveSettings()">حفظ الإعدادات</button>
+</div>
+
+<div class="card">
+<h3>📅 بيانات الشهر</h3>
+<select id="month"></select>
+<input id="commission" type="number" placeholder="💰 العمولة">
+<input id="education" type="number" placeholder="🎓 التعليم">
+<input id="fuel" type="number" placeholder="⛽ البنزين">
+<input id="groceries" type="number" placeholder="🛒 المقاضي">
+<input id="restaurants" type="number" placeholder="🍔 المطاعم">
+<input id="other" type="number" placeholder="📦 أخرى">
+<input id="extraLoan" type="number" placeholder="🚀 السداد الإضافي">
+<input id="saving" type="number" placeholder="🎯 الادخار">
+<button onclick="saveMonth()">💾 حفظ الشهر</button>
+<button onclick="clearMonth()">🗑️ مسح الشهر</button>
+<div id="msg"></div>
+</div>
+
+<div class="card">
+<table>
+<thead><tr><th>الشهر</th><th>الحالة</th><th>آخر تعديل</th><th>المصروفات</th><th>الادخار</th><th>القرض المتبقي</th></tr></thead>
+<tbody id="tbl"></tbody>
+</table>
+</div>
+
+<script>
+const months=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+months.forEach(m=>month.add(new Option(m,m)));
+month.value=months[new Date().getMonth()];
+
+function saveSettings(){
+ localStorage.setItem("mf_settings",JSON.stringify({
+ salary:+salary.value,baseLoan:+baseLoan.value,loanPay:+loanPay.value
+ }));
+ alert("تم حفظ الإعدادات");
+ refresh();
+}
+
+function getSettings(){
+ return JSON.parse(localStorage.getItem("mf_settings")||'{"salary":5900,"baseLoan":19752,"loanPay":1646}');
+}
+
+function saveMonth(){
+ let d={commission:+commission.value||0,education:+education.value||0,fuel:+fuel.value||0,groceries:+groceries.value||0,restaurants:+restaurants.value||0,other:+other.value||0,extraLoan:+extraLoan.value||0,saving:+saving.value||0,updated:new Date().toLocaleString()};
+ localStorage.setItem("mf_"+month.value,JSON.stringify(d));
+ ["commission","education","fuel","groceries","restaurants","other","extraLoan","saving"].forEach(i=>document.getElementById(i).value="");
+ msg.innerHTML="✅ تم الحفظ";
+ refresh();
+}
+
+function clearMonth(){
+ if(!confirm("حذف بيانات هذا الشهر؟")) return;
+ localStorage.removeItem("mf_"+month.value);
+ loadMonth();
+ refresh();
+}
+
+function loadMonth(){
+ let d=JSON.parse(localStorage.getItem("mf_"+month.value)||"{}");
+ ["commission","education","fuel","groceries","restaurants","other","extraLoan","saving"].forEach(i=>document.getElementById(i).value=d[i]||"");
+}
+
+function refresh(){
+ let s=getSettings();
+ salary.value=s.salary;baseLoan.value=s.baseLoan;loanPay.value=s.loanPay;
+
+ let loan=s.baseLoan, annualSave=0, rows="";
+ months.forEach((m,i)=>{
+   let d=JSON.parse(localStorage.getItem("mf_"+m)||"{}");
+   loan=Math.max(loan-s.loanPay-(d.extraLoan||0),0);
+   let exp=(d.education||0)+(d.fuel||0)+(d.groceries||0)+(d.restaurants||0)+(d.other||0);
+   annualSave+=(d.saving||0);
+   let locked=i<new Date().getMonth()?"🔒":"🔓";
+   rows+=`<tr><td>${m}</td><td>${locked}</td><td>${d.updated||"-"}</td><td>${exp}</td><td>${d.saving||0}</td><td>${loan}</td></tr>`;
+ });
+ tbl.innerHTML=rows;
+ annual.innerText=annualSave;
+
+ let d=JSON.parse(localStorage.getItem("mf_"+month.value)||"{}");
+ let income=s.salary+(d.commission||0);
+ let exp=(d.education||0)+(d.fuel||0)+(d.groceries||0)+(d.restaurants||0)+(d.other||0);
+ let rem=income-exp-(d.saving||0)-s.loanPay-(d.extraLoan||0);
+ remain.innerText=rem;
+ loanOut.innerText=loan;
+
+ let ratio=income?((d.saving||0)/income)*100:0;
+ status.innerText=ratio>=30?"🟢 ممتاز":ratio>=15?"🟡 جيد":"🔴 يحتاج ضبط";
+}
+month.onchange=()=>{loadMonth();refresh();};
+loadMonth();refresh();
+</script>
+</body></html>
