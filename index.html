@@ -59,6 +59,7 @@ color:#1f2937;
 <input id="saving" type="number" placeholder="🎯 الادخار">
 <button onclick="saveMonth()">💾 حفظ</button>
 <button onclick="deleteMonth()">🗑️ حذف الشهر</button>
+ <button onclick="resetYear()">⚠️ إعادة تعيين السنة</button>
 <div id="msg"></div>
 </div>
 
@@ -102,7 +103,20 @@ function deleteMonth(){
  localStorage.removeItem(key());
  loadMonth(); refresh();
 }
+function resetYear(){
+    if(!confirm("سيتم حذف جميع بيانات السنة الحالية، هل أنت متأكد؟")){
+        return;
+    }
 
+    months.forEach(m => {
+        localStorage.removeItem(year.value + "_" + m);
+    });
+
+    loadMonth();
+    refresh();
+
+    msg.innerHTML = "✅ تم إعادة تعيين السنة بنجاح";
+}
 function loadMonth(){
  let d=JSON.parse(localStorage.getItem(key())||"{}");
 ["startBalance","commission","commitments","education","fuel","groceries","restaurants","other","extraLoan","saving"].forEach(x=>{
