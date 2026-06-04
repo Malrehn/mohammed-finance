@@ -149,7 +149,81 @@ function resetYear(){
       }
     </style>
   </head>
+function printYearReport(){
 
+let rows = "";
+
+months.forEach(m => {
+  let d = JSON.parse(localStorage.getItem(year.value + "_" + m) || "{}");
+
+  rows += `
+  <tr>
+    <td>${m}</td>
+    <td>${d.commission || 0}</td>
+    <td>${d.commitments || 0}</td>
+    <td>${d.saving || 0}</td>
+    <td>${d.extraLoan || 0}</td>
+  </tr>`;
+});
+
+const report = `
+<html dir="rtl">
+<head>
+<title>التقرير السنوي</title>
+<style>
+body{
+font-family:Arial;
+padding:20px;
+direction:rtl;
+}
+h1{
+text-align:center;
+}
+table{
+width:100%;
+border-collapse:collapse;
+}
+th,td{
+border:1px solid #ddd;
+padding:8px;
+text-align:center;
+}
+</style>
+</head>
+<body>
+
+<h1>MALREHN</h1>
+<h2 style="text-align:center">
+التقرير السنوي ${year.value}
+</h2>
+
+<table>
+<tr>
+<th>الشهر</th>
+<th>العمولة</th>
+<th>الالتزامات</th>
+<th>الادخار</th>
+<th>سداد القرض</th>
+</tr>
+
+${rows}
+
+</table>
+
+<script>
+window.onload=function(){
+window.print();
+}
+<\/script>
+
+</body>
+</html>
+`;
+
+let w = window.open("", "_blank");
+w.document.write(report);
+w.document.close();
+}
   <body>
 
     <h1>MALREHN</h1>
