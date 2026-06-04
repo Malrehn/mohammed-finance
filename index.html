@@ -144,22 +144,21 @@ annual.innerText = annualSave;
 
 // حساب الحالة السنوية
 
-// حساب حالة الادخار للشهر الحالي
+// حالة الادخار للشهر الحالي
 
-let ratio = 0;
+let savingAmount = (+d.saving || 0);
 
-if(income > 0){
- ratio = ((+d.saving || 0) / income) * 100;
+if (savingAmount >= 1000){
+    status.innerHTML = "🟢 ممتاز";
 }
-
-if(ratio >= 20){
- status.innerHTML = "🟢 ممتاز";
+else if (savingAmount >= 500){
+    status.innerHTML = "🟡 جيد";
 }
-else if(ratio >= 10){
- status.innerHTML = "🟡 جيد";
+else if (savingAmount > 0){
+    status.innerHTML = "🟠 مقبول";
 }
 else{
- status.innerHTML = "🔴 يحتاج تحسين";
+    status.innerHTML = "🔴 لا يوجد ادخار";
 }
 console.log("ratio =", ratio);
  const originalLoan = 19752;
