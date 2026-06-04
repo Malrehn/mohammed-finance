@@ -79,7 +79,184 @@ month.value=months[new Date().getMonth()];
 function key(){return year.value+"_"+month.value;}
 
 function saveMonth(){
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>مدير محمد المالي V6</title>
+<style>
+body{font-family:Arial;background:#f4f6f8;max-width:1200px;margin:auto;padding:10px}
+.card{background:#fff;border-radius:12px;padding:12px;margin:8px 0}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+input,select,button{width:100%;padding:8px;margin:4px 0}
+table{width:100%;border-collapse:collapse}
+th,td{border:1px solid #ddd;padding:6px;text-align:center}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<h2>💼 مدير محمد المالي V6</h2>
+
+<div class="grid">
+<div class="card">💰 المتبقي<br><b id="remain">0</b></div>
+<div class="card">🏦 نهاية الشهر<br><b id="endbal">0</b></div>
+<div class="card">🎯 الادخار السنوي<br><b id="annual">0</b></div>
+<div class="card">🚦 الحالة<br><b id="status">-</b></div>
+ <div class="card">🏦 القرض المتبقي<br><b id="loanRemain">19752</b></div>
+<div class="card">✅ المسدد<br><b id="loanPaid">0</b></div>
+<div class="card">📈 الإنجاز<br><b id="loanProgress">0%</b></div>
+</div>
+
+<div class="card">
+<h3>⚙️ الإعدادات</h3>
+<input id="salary" type="number" value="5900" placeholder="الراتب">
+<input id="maid" type="number" value="1000" placeholder="راتب العاملة">
+<select id="year">
+<option>2026</option><option>2027</option><option>2028</option><option>2029</option>
+</select>
+</div>
+
+<div class="card">
+<h3>📅 بيانات الشهر</h3>
+<select id="month"></select>
+<input id="startBalance" type="number" placeholder="🏦 رصيد بداية الشهر">
+<input id="commission" type="number" placeholder="💰 العمولة">
+<input id="commitments" type="number" placeholder="💳 الالتزامات الشهرية">
+<input id="education" type="number" placeholder="🎓 التعليم">
+<input id="fuel" type="number" placeholder="⛽ البنزين">
+<input id="groceries" type="number" placeholder="🛒 المقاضي">
+<input id="restaurants" type="number" placeholder="🍔 المطاعم">
+<input id="other" type="number" placeholder="📦 أخرى">
+<input id="extraLoan" type="number" placeholder="🚀 سداد إضافي للقرض">
+<input id="saving" type="number" placeholder="🎯 الادخار">
+<button onclick="saveMonth()">💾 حفظ</button>
+<button onclick="deleteMonth()">🗑️ حذف الشهر</button>
+<div id="msg"></div>
+</div>
+
+<div class="card">
+<h3>📋 السجل السنوي</h3>
+<table>
+<thead><tr><th>الشهر</th><th>العمولة</th><th>الالتزامات</th><th>الادخار</th><th>القرض</th></tr></thead>
+<tbody id="tbl"></tbody>
+</table>
+</div>
+
+<script>
+const months=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+months.forEach(m=>month.add(new Option(m,m)));
+month.value=months[new Date().getMonth()];
+
+function key(){return year.value+"_"+month.value;}
+
+function saveMonth(){
  const d={
+ startBalance:+startBalance.value||0, commission:+commission.value||0,
+ commitments:+commitments.value||0, education:+education.value||0,
+ fuel:+fuel.value||0, groceries:+groceries.value||0,
+ restaurants:+restaurants.value||0, other:+other.value||0,
+ loanBalance:+loanBalance.value||0, extraLoan:+extraLoan.value||0,
+ saving:+saving.value||0, updated:new Date().toLocaleString()
+ };
+ localStorage.setItem(key(),JSON.stringify(d));
+ msg.innerHTML="✅ تم الحفظ بنجاح";
+ ["commission","commitments","education","fuel","groceries","restaurants","other","loanBalance","extraLoan","saving"].forEach(x=>document.getElementById(x).value="");
+ refresh();
+}
+
+function deleteMonth(){
+ localStorage.removeItem(key());
+ loadMonth(); refresh();
+}
+
+function loadMonth(){
+ let d=JSON.parse(localStorage.getItem(key())||"{}");
+ ["startBalance","commission","commitments","education","fuel","groceries","restaurants","other","loanBalance","extraLoan","saving"].forEach(x=>{
+ if(d[x]!=null) document.getElementById(x).value=d[x];
+ });
+ refresh();
+}
+
+function refresh(){
+ let annualSave=0, rows="";
+ months.forEach(m=>{
+  let d=JSON.parse(localStorage.getItem(year.value+"_"+m)||"{}");
+  annualSave += (+d.saving||0);
+  rows += `<tr><td>${m}</td><td>${d.commission||0}</td><td>${d.commitments||0}</td><td>${d.saving||0}</td><td>${d.loanBalance||0}</td></tr>`;
+ });
+ tbl.innerHTML=rows;
+ annual.innerText=annualSave;
+
+ let d=JSON.parse(localStorage.getItem(key())||"{}");
+ let income=(+salary.value||0)+(+d.commission||0);
+ let expenses=(+maid.value||0)+(+d.commitments||0)+(+d.education||0)+(+d.fuel||0)+(+d.groceries||0)+(+d.restaurants||0)+(+d.other||0)+(+d.extraLoan||0)+(+d.saving||0);
+ let rem=income-expenses;
+ remain.innerText=rem.toFixed(0);
+ endbal.innerText=((+d.startBalance||0)+income-expenses).toFixed(0);
+
+// حساب الحالة السنوية
+
+let totalIncome = 0;
+let totalSaving = 0;
+
+months.forEach(m => {
+
+ let monthData =
+ JSON.parse(localStorage.getItem(year.value+"_"+m) || "{}");
+
+ totalIncome +=
+ (+salary.value || 0) +
+ (+monthData.commission || 0);
+
+ totalSaving +=
+ (+monthData.saving || 0);
+
+});
+
+let yearlyRatio =
+ totalIncome ?
+ (totalSaving / totalIncome) * 100 : 0;
+
+status.innerText = "النسبة: " + yearlyRatio.toFixed(1) + "%";
+ console.log("yearlyRatio =", yearlyRatio);
+ const originalLoan = 19752;
+
+let currentLoan = 19752;
+
+months.forEach(m => {
+
+ let monthData =
+ JSON.parse(localStorage.getItem(year.value+"_"+m) || "{}");
+
+ currentLoan -= (+monthData.extraLoan || 0);
+
+});
+
+if(currentLoan < 0) currentLoan = 0;
+
+let paidLoan = originalLoan - currentLoan;
+
+if (paidLoan < 0) paidLoan = 0;
+
+let progress = (paidLoan / originalLoan) * 100;
+
+document.getElementById("loanRemain").innerText =
+currentLoan.toFixed(0);
+
+document.getElementById("loanPaid").innerText =
+paidLoan.toFixed(0);
+
+document.getElementById("loanProgress").innerText =
+progress.toFixed(1) + "%";
+}
+month.onchange=loadMonth;
+year.onchange=loadMonth;
+loadMonth();
+</script>
+</body>
+</html>
  startBalance:+startBalance.value||0, commission:+commission.value||0,
  commitments:+commitments.value||0, education:+education.value||0,
  fuel:+fuel.value||0, groceries:+groceries.value||0,
