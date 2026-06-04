@@ -144,31 +144,19 @@ annual.innerText = annualSave;
  remain.innerText=rem.toFixed(0);
  endbal.innerText=((+d.startBalance||0)+income-expenses).toFixed(0);
 
-// حساب الحالة السنوية
+// حالة الادخار الشهرية
 
-let totalIncome = 0;
-let totalSaving = 0;
+let ratio = income ? ((+d.saving || 0) / income) * 100 : 0;
 
-months.forEach(m => {
-
- let monthData =
- JSON.parse(localStorage.getItem(year.value+"_"+m) || "{}");
-
- totalIncome +=
- (+salary.value || 0) +
- (+monthData.commission || 0);
-
- totalSaving +=
- (+monthData.saving || 0);
-
-});
-
-let yearlyRatio =
- totalIncome ?
- (totalSaving / totalIncome) * 100 : 0;
-
-status.innerText = "النسبة: " + yearlyRatio.toFixed(1) + "%";
- console.log("yearlyRatio =", yearlyRatio);
+if(ratio >= 20){
+ status.innerHTML = "🟢 ممتاز";
+}
+else if(ratio >= 10){
+ status.innerHTML = "🟡 جيد";
+}
+else{
+ status.innerHTML = "🔴 يحتاج تحسين";
+}
  const originalLoan = 19752;
 
 let currentLoan = 19752;
