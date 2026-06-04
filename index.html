@@ -139,27 +139,24 @@ annual.innerText = annualSave;
 
  let d=JSON.parse(localStorage.getItem(key())||"{}");
  let income=(+salary.value||0)+(+d.commission||0);
- let expenses=(+maid.value||0)+(+d.commitments||0)+(+d.education||0)+(+d.fuel||0)+(+d.groceries||0)+(+d.restaurants||0)+(+d.other||0)+(+d.extraLoan||0)+(+d.saving||0);
+let expenses=(+maid.value||0)+(+d.commitments||0)+(+d.education||0)+(+d.fuel||0)+(+d.groceries||0)+(+d.restaurants||0)+(+d.other||0)+(+d.extraLoan||0)+(+d.saving||0);
  let rem=income-expenses;
  remain.innerText=rem.toFixed(0);
  endbal.innerText=((+d.startBalance||0)+income-expenses).toFixed(0);
-
+console.log("income=",income,"saving=",d.saving,"ratio=",ratio);
 // حالة الادخار الشهرية
 
-let ratio = 0;
-
-if(income > 0){
-    ratio = ((+d.saving || 0) / income) * 100;
-}
-
-if(ratio >= 20){
+if((+d.saving || 0) >= 1000){
     status.innerHTML = "🟢 ممتاز";
 }
-else if(ratio >= 10){
+else if((+d.saving || 0) >= 500){
     status.innerHTML = "🟡 جيد";
 }
+else if((+d.saving || 0) > 0){
+    status.innerHTML = "🟠 مقبول";
+}
 else{
-    status.innerHTML = "🔴 يحتاج تحسين";
+    status.innerHTML = "🔴 لا يوجد ادخار";
 }
  const originalLoan = 19752;
 
