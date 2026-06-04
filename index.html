@@ -113,7 +113,7 @@ function loadMonth(){
 
 function refresh(){
 let annualSave = 0, rows = "";
-
+const status = document.getElementById("status");
 months.forEach(m => {
 
  let d = JSON.parse(localStorage.getItem(year.value + "_" + m) || "{}");
@@ -171,7 +171,7 @@ else if (savingAmount > 0){
 else{
     status.innerHTML = "🔴 لا يوجد ادخار";
 }
-status.innerHTML = "اختبار";
+
 
  const originalLoan = 19752;
 
