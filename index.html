@@ -107,9 +107,9 @@ function deleteMonth(){
 
 function loadMonth(){
  let d=JSON.parse(localStorage.getItem(key())||"{}");
-["startBalance","commission","commitments","education","fuel","groceries","restaurants","other","extraLoan","saving"]
+["startBalance","commission","commitments","education","fuel","groceries","restaurants","other","extraLoan","saving"].forEach(x=>{
  if(d[x]!=null) document.getElementById(x).value=d[x];
- });
+});
  refresh();
 }
 
