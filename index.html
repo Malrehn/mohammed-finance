@@ -114,19 +114,26 @@ function loadMonth(){
 }
 
 function refresh(){
- let annualSave=0, rows="";
- months.forEach(m=>{
-  let d=JSON.parse(localStorage.getItem(year.value+"_"+m)||"{}");
-  annualSave += (+d.saving||0);
-rows += `<tr>
+let annualSave = 0, rows = "";
+
+months.forEach(m => {
+
+ let d = JSON.parse(localStorage.getItem(year.value + "_" + m) || "{}");
+
+ annualSave += (+d.saving || 0);
+
+ rows += `<tr>
 <td>${m}</td>
-<td>${d.commission||0}</td>
-<td>${d.commitments||0}</td>
-<td>${d.saving||0}</td>
-<td>${d.extraLoan||0}</td>
+<td>${d.commission || 0}</td>
+<td>${d.commitments || 0}</td>
+<td>${d.saving || 0}</td>
+<td>${d.extraLoan || 0}</td>
 </tr>`;
 
- });
+});
+
+tbl.innerHTML = rows;
+annual.innerText = annualSave;
  tbl.innerHTML=rows;
  annual.innerText=annualSave;
 
