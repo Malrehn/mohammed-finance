@@ -118,6 +118,24 @@ function refresh(){
 
  let ratio=income?((+d.saving||0)/income)*100:0;
  status.innerText=ratio>=30?"🟢 ممتاز":ratio>=15?"🟡 جيد":"🔴 يحتاج ضبط";
+ const originalLoan = 19752;
+
+let currentLoan = +d.loanBalance || originalLoan;
+
+let paidLoan = originalLoan - currentLoan;
+
+if (paidLoan < 0) paidLoan = 0;
+
+let progress = (paidLoan / originalLoan) * 100;
+
+document.getElementById("loanRemain").innerText =
+currentLoan.toFixed(0);
+
+document.getElementById("loanPaid").innerText =
+paidLoan.toFixed(0);
+
+document.getElementById("loanProgress").innerText =
+progress.toFixed(1) + "%";
 }
 month.onchange=loadMonth;
 year.onchange=loadMonth;
