@@ -118,6 +118,65 @@ function resetYear(){
 
     msg.innerHTML = "✅ تم إعادة تعيين السنة بنجاح";
 }
+ function printReport(){
+
+  const report = `
+  <html dir="rtl">
+  <head>
+    <title>MALREHN</title>
+    <style>
+      body{
+        font-family:Arial;
+        padding:20px;
+        direction:rtl;
+      }
+
+      h1{
+        text-align:center;
+        color:#1f2937;
+      }
+
+      table{
+        width:100%;
+        border-collapse:collapse;
+        margin-top:20px;
+      }
+
+      td{
+        border:1px solid #ddd;
+        padding:10px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <h1>MALREHN</h1>
+
+    <table>
+      <tr><td>المتبقي</td><td>${remain.innerText}</td></tr>
+      <tr><td>نهاية الشهر</td><td>${endbal.innerText}</td></tr>
+      <tr><td>الادخار السنوي</td><td>${annual.innerText}</td></tr>
+      <tr><td>الحالة</td><td>${status.innerText}</td></tr>
+      <tr><td>القرض المتبقي</td><td>${loanRemain.innerText}</td></tr>
+      <tr><td>المسدد</td><td>${loanPaid.innerText}</td></tr>
+      <tr><td>نسبة الإنجاز</td><td>${loanProgress.innerText}</td></tr>
+    </table>
+
+    <script>
+      window.onload=function(){
+        window.print();
+      }
+    <\/script>
+
+  </body>
+  </html>
+  `;
+
+  const win = window.open('', '_blank');
+  win.document.write(report);
+  win.document.close();
+}
 function loadMonth(){
  let d=JSON.parse(localStorage.getItem(key())||"{}");
 ["startBalance","commission","commitments","education","fuel","groceries","restaurants","other","extraLoan","saving"].forEach(x=>{
