@@ -139,7 +139,7 @@ let yearlyRatio =
  totalIncome ?
  (totalSaving / totalIncome) * 100 : 0;
 
-status.innerText = yearlyRatio >= 30 ? "🟢 ممتاز" : yearlyRatio >= 15 ? "🟡 جيد" : "🔴 يحتاج ضبط";
+status.innerText = "النسبة: " + yearlyRatio.toFixed(1) + "%";
  console.log("yearlyRatio =", yearlyRatio);
  const originalLoan = 19752;
 
