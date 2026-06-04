@@ -85,11 +85,18 @@ function saveMonth(){
  fuel:+fuel.value||0, groceries:+groceries.value||0,
  restaurants:+restaurants.value||0, other:+other.value||0,
 
- saving:+saving.value||0, updated:new Date().toLocaleString()
+restaurants:+restaurants.value||0,
+other:+other.value||0,
+extraLoan:+extraLoan.value||0,
+
+saving:+saving.value||0,
+updated:new Date().toLocaleString()
  };
  localStorage.setItem(key(),JSON.stringify(d));
  msg.innerHTML="✅ تم الحفظ بنجاح";
-["commission","commitments","education","fuel","groceries","restaurants","other","extraLoan","saving"]
+["commission","commitments","education","fuel","groceries","restaurants","other","extraLoan","saving"].forEach(x=>{
+document.getElementById(x).value="";
+});
  refresh();
 }
 
