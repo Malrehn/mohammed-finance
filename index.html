@@ -136,7 +136,7 @@ annual.innerText = annualSave;
  annual.innerText=annualSave;
 
  let d = JSON.parse(localStorage.getItem(key()) || "{}");
-alert("وصلت هنا");
+
 let income = (+salary.value || 0) + (+d.commission || 0);
 
 let expenses =
@@ -147,7 +147,7 @@ let expenses =
 (+d.groceries || 0) +
 (+d.restaurants || 0) +
 (+d.other || 0) +
-(+d.extraLoan || 0);
+status.innerHTML = "اختبار";
 
 let rem = income - expenses;
 
@@ -160,19 +160,7 @@ endbal.innerText = ((+d.startBalance || 0) + rem);
 
 let savingAmount = (+d.saving || 0);
 status.innerHTML = "اختبار";
-if (savingAmount >= 1000){
-    status.innerHTML = "🟢 ممتاز";
-}
-else if (savingAmount >= 500){
-    status.innerHTML = "🟡 جيد";
-}
-else if (savingAmount > 0){
-    status.innerHTML = "🟠 مقبول";
-}
-else{
-    status.innerHTML = "🔴 لا يوجد ادخار";
-}
-console.log("savingAmount =", savingAmount);
+
  const originalLoan = 19752;
 
 let currentLoan = 19752;
