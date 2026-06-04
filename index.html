@@ -143,7 +143,20 @@ status.innerText = "النسبة: " + yearlyRatio.toFixed(1) + "%";
  console.log("yearlyRatio =", yearlyRatio);
  const originalLoan = 19752;
 
-let currentLoan = +d.loanBalance || originalLoan;
+let currentLoan = originalLoan;
+
+months.forEach(m => {
+
+ let monthData =
+ JSON.parse(localStorage.getItem(year.value+"_"+m) || "{}");
+
+ currentLoan -= 1646;
+
+ currentLoan -= (+monthData.extraLoan || 0);
+
+});
+
+if(currentLoan < 0) currentLoan = 0;
 
 let paidLoan = originalLoan - currentLoan;
 
