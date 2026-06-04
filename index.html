@@ -84,8 +84,7 @@ function saveMonth(){
  fuel:+fuel.value||0, groceries:+groceries.value||0,
  restaurants:+restaurants.value||0, other:+other.value||0,
 
-restaurants:+restaurants.value||0,
-other:+other.value||0,
+  
 extraLoan:+extraLoan.value||0,
 
 saving:+saving.value||0,
@@ -145,28 +144,23 @@ annual.innerText = annualSave;
 
 // حساب الحالة السنوية
 
-let totalIncome = 0;
-let totalSaving = 0;
+// حساب حالة الادخار للشهر الحالي
 
-months.forEach(m => {
+let ratio = 0;
 
- let monthData =
- JSON.parse(localStorage.getItem(year.value+"_"+m) || "{}");
+if(income > 0){
+ ratio = ((+d.saving || 0) / income) * 100;
+}
 
- totalIncome +=
- (+salary.value || 0) +
- (+monthData.commission || 0);
-
- totalSaving +=
- (+monthData.saving || 0);
-
-});
-
-let yearlyRatio =
- totalIncome ?
- (totalSaving / totalIncome) * 100 : 0;
-
-status.innerText = "النسبة: " + yearlyRatio.toFixed(1) + "%";
+if(ratio >= 20){
+ status.innerHTML = "🟢 ممتاز";
+}
+else if(ratio >= 10){
+ status.innerHTML = "🟡 جيد";
+}
+else{
+ status.innerHTML = "🔴 يحتاج تحسين";
+}
  console.log("yearlyRatio =", yearlyRatio);
  const originalLoan = 19752;
 
