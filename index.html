@@ -135,12 +135,24 @@ annual.innerText = annualSave;
  tbl.innerHTML=rows;
  annual.innerText=annualSave;
 
- let d=JSON.parse(localStorage.getItem(key())||"{}");
- let income=(+salary.value||0)+(+d.commission||0);
- let expenses=(+maid.value||0)+(+d.commitments||0)+(+d.education||0)+(+d.fuel||0)+(+d.groceries||0)+(+d.restaurants||0)+(+d.other||0)+(+d.extraLoan||0)+(+d.saving||0);
- let rem=income-expenses;
- remain.innerText=rem.toFixed(0);
- endbal.innerText=((+d.startBalance||0)+income-expenses).toFixed(0);
+ let d = JSON.parse(localStorage.getItem(key()) || "{}");
+
+let income = (+salary.value || 0) + (+d.commission || 0);
+
+let expenses =
+(+maid.value || 0) +
+(+d.commitments || 0) +
+(+d.education || 0) +
+(+d.fuel || 0) +
+(+d.groceries || 0) +
+(+d.restaurants || 0) +
+(+d.other || 0) +
+(+d.extraLoan || 0);
+
+let rem = income - expenses;
+
+remain.innerText = rem;
+endbal.innerText = ((+d.startBalance || 0) + rem);
 
 // حساب الحالة السنوية
 
