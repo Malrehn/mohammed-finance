@@ -159,6 +159,18 @@ endbal.innerText = ((+d.startBalance || 0) + rem);
 // حالة الادخار للشهر الحالي
 
 let savingAmount = (+d.saving || 0);
+ if (savingAmount >= 1000){
+    status.innerHTML = "🟢 ممتاز";
+}
+else if (savingAmount >= 500){
+    status.innerHTML = "🟡 جيد";
+}
+else if (savingAmount > 0){
+    status.innerHTML = "🟠 مقبول";
+}
+else{
+    status.innerHTML = "🔴 لا يوجد ادخار";
+}
 status.innerHTML = "اختبار";
 
  const originalLoan = 19752;
