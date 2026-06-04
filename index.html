@@ -143,14 +143,12 @@ status.innerText = "النسبة: " + yearlyRatio.toFixed(1) + "%";
  console.log("yearlyRatio =", yearlyRatio);
  const originalLoan = 19752;
 
-let currentLoan = originalLoan;
+let currentLoan = 19752;
 
 months.forEach(m => {
 
  let monthData =
  JSON.parse(localStorage.getItem(year.value+"_"+m) || "{}");
-
- currentLoan -= 1646;
 
  currentLoan -= (+monthData.extraLoan || 0);
 
