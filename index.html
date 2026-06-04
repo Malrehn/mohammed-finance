@@ -48,7 +48,7 @@ th,td{border:1px solid #ddd;padding:6px;text-align:center}
 <input id="groceries" type="number" placeholder="🛒 المقاضي">
 <input id="restaurants" type="number" placeholder="🍔 المطاعم">
 <input id="other" type="number" placeholder="📦 أخرى">
-<input id="extraLoan" type="number" placeholder="🚀 سداد إضافي للقرض">
+<input id="extraLoan" type="number" placeholder="🏦 مبلغ سداد القرض">
 <input id="saving" type="number" placeholder="🎯 الادخار">
 <button onclick="saveMonth()">💾 حفظ</button>
 <button onclick="deleteMonth()">🗑️ حذف الشهر</button>
@@ -76,12 +76,12 @@ function saveMonth(){
  commitments:+commitments.value||0, education:+education.value||0,
  fuel:+fuel.value||0, groceries:+groceries.value||0,
  restaurants:+restaurants.value||0, other:+other.value||0,
- loanBalance:+loanBalance.value||0, extraLoan:+extraLoan.value||0,
+
  saving:+saving.value||0, updated:new Date().toLocaleString()
  };
  localStorage.setItem(key(),JSON.stringify(d));
  msg.innerHTML="✅ تم الحفظ بنجاح";
- ["commission","commitments","education","fuel","groceries","restaurants","other","loanBalance","extraLoan","saving"].forEach(x=>document.getElementById(x).value="");
+["commission","commitments","education","fuel","groceries","restaurants","other","extraLoan","saving"]
  refresh();
 }
 
@@ -92,7 +92,7 @@ function deleteMonth(){
 
 function loadMonth(){
  let d=JSON.parse(localStorage.getItem(key())||"{}");
- ["startBalance","commission","commitments","education","fuel","groceries","restaurants","other","loanBalance","extraLoan","saving"].forEach(x=>{
+["startBalance","commission","commitments","education","fuel","groceries","restaurants","other","extraLoan","saving"]
  if(d[x]!=null) document.getElementById(x).value=d[x];
  });
  refresh();
@@ -103,7 +103,7 @@ function refresh(){
  months.forEach(m=>{
   let d=JSON.parse(localStorage.getItem(year.value+"_"+m)||"{}");
   annualSave += (+d.saving||0);
-  rows += `<tr><td>${m}</td><td>${d.commission||0}</td><td>${d.commitments||0}</td><td>${d.saving||0}</td><td>${d.loanBalance||0}</td></tr>`;
+${d.extraLoan||0}
  });
  tbl.innerHTML=rows;
  annual.innerText=annualSave;
