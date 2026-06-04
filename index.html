@@ -146,16 +146,20 @@ annual.innerText = annualSave;
 
 // حالة الادخار الشهرية
 
-let ratio = income ? ((+d.saving || 0) / income) * 100 : 0;
+let ratio = 0;
+
+if(income > 0){
+    ratio = ((+d.saving || 0) / income) * 100;
+}
 
 if(ratio >= 20){
- status.innerHTML = "🟢 ممتاز";
+    status.innerHTML = "🟢 ممتاز";
 }
 else if(ratio >= 10){
- status.innerHTML = "🟡 جيد";
+    status.innerHTML = "🟡 جيد";
 }
 else{
- status.innerHTML = "🔴 يحتاج تحسين";
+    status.innerHTML = "🔴 يحتاج تحسين";
 }
  const originalLoan = 19752;
 
