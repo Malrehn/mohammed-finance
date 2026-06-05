@@ -58,6 +58,7 @@ box-shadow:0 8px 18px rgba(0,0,0,.18);
 .print{background:#3b82f6;color:white;}
 .report{background:#8b5cf6;color:white;}
 .reset{background:#f59e0b;color:white;}
+ .add{background:#16a34a;color:white;}
 </style>
 </head>
 <body>
@@ -174,6 +175,29 @@ document.getElementById(x).value="";
 function deleteMonth(){
  localStorage.removeItem(key());
  loadMonth(); refresh();
+}
+ function addValues(){
+
+let d = JSON.parse(localStorage.getItem(key()) || "{}");
+
+d.commission  = (d.commission  || 0) + (+commission.value  || 0);
+d.commitments = (d.commitments || 0) + (+commitments.value || 0);
+d.education   = (d.education   || 0) + (+education.value   || 0);
+d.fuel        = (d.fuel        || 0) + (+fuel.value        || 0);
+d.groceries   = (d.groceries   || 0) + (+groceries.value   || 0);
+d.restaurants = (d.restaurants || 0) + (+restaurants.value || 0);
+d.other       = (d.other       || 0) + (+other.value       || 0);
+d.extraLoan   = (d.extraLoan   || 0) + (+extraLoan.value   || 0);
+d.saving      = (d.saving      || 0) + (+saving.value      || 0);
+
+d.updated = new Date().toLocaleString();
+
+localStorage.setItem(key(), JSON.stringify(d));
+
+loadMonth();
+refresh();
+
+msg.innerHTML="➕ تمت الإضافة بنجاح";
 }
 month.onchange=loadMonth;
 year.onchange=loadMonth;
