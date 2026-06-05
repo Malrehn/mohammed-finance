@@ -159,7 +159,6 @@ d.other        = +other.value        || d.other        || 0;
 d.extraLoan    = +extraLoan.value    || d.extraLoan    || 0;
 d.saving       = +saving.value       || d.saving       || 0;
 d.updated      = new Date().toLocaleString();
- };
  localStorage.setItem(key(),JSON.stringify(d));
  msg.innerHTML="✅ تم الحفظ بنجاح";
 ["commission","commitments","education","fuel","groceries","restaurants","other","extraLoan","saving"].forEach(x=>{
