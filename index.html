@@ -147,17 +147,18 @@ month.value=months[new Date().getMonth()];
 function key(){return year.value+"_"+month.value;}
 
 function saveMonth(){
- const d={
- startBalance:+startBalance.value||0, commission:+commission.value||0,
- commitments:+commitments.value||0, education:+education.value||0,
- fuel:+fuel.value||0, groceries:+groceries.value||0,
- restaurants:+restaurants.value||0, other:+other.value||0,
-
-  
-extraLoan:+extraLoan.value||0,
-
-saving:+saving.value||0,
-updated:new Date().toLocaleString()
+const d = JSON.parse(localStorage.getItem(key()) || "{}");
+ d.startBalance = +startBalance.value || d.startBalance || 0;
+d.commission   = +commission.value   || d.commission   || 0;
+d.commitments  = +commitments.value  || d.commitments  || 0;
+d.education    = +education.value    || d.education    || 0;
+d.fuel         = +fuel.value         || d.fuel         || 0;
+d.groceries    = +groceries.value    || d.groceries    || 0;
+d.restaurants  = +restaurants.value  || d.restaurants  || 0;
+d.other        = +other.value        || d.other        || 0;
+d.extraLoan    = +extraLoan.value    || d.extraLoan    || 0;
+d.saving       = +saving.value       || d.saving       || 0;
+d.updated      = new Date().toLocaleString();
  };
  localStorage.setItem(key(),JSON.stringify(d));
  msg.innerHTML="✅ تم الحفظ بنجاح";
