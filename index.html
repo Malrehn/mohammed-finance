@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -28,7 +27,6 @@ margin-top:15px;
 flex-wrap:wrap;
 direction:rtl;
 }
-
 .tool-btn{
 width:170px;
 height:210px;
@@ -46,13 +44,10 @@ align-items:center;
 gap:15px;
 box-shadow:0 8px 20px rgba(0,0,0,.25);
 }
-}
-
 .tool-btn:hover{
 transform:translateY(-3px);
 box-shadow:0 8px 18px rgba(0,0,0,.18);
 }
-
 .save{background:#22c55e;color:white;}
 .delete{background:#ef4444;color:white;}
 .print{background:#3b82f6;color:white;}
@@ -63,7 +58,6 @@ box-shadow:0 8px 18px rgba(0,0,0,.18);
 </head>
 <body>
 <h1 class="logo">MALREHN</h1>
-
 <div class="grid">
 <div class="card">💰 المتبقي<br><b id="remain">0</b></div>
 <div class="card">🏦 نهاية الشهر<br><b id="endbal">0</b></div>
@@ -73,7 +67,6 @@ box-shadow:0 8px 18px rgba(0,0,0,.18);
 <div class="card">✅ المسدد<br><b id="loanPaid">0</b></div>
 <div class="card">📈 الإنجاز<br><b id="loanProgress">0%</b></div>
 </div>
-
 <div class="card">
 <h3>⚙️ الإعدادات</h3>
 <input id="salary" type="number" value="5900" placeholder="الراتب">
@@ -82,7 +75,6 @@ box-shadow:0 8px 18px rgba(0,0,0,.18);
 <option>2026</option><option>2027</option><option>2028</option><option>2029</option>
 </select>
 </div>
-
 <div class="card">
 <h3>📅 بيانات الشهر</h3>
 <select id="month"></select>
@@ -97,7 +89,6 @@ box-shadow:0 8px 18px rgba(0,0,0,.18);
 <input id="extraLoan" type="number" placeholder="🏦 مبلغ سداد القرض">
 <input id="saving" type="number" placeholder="🎯 الادخار">
 <div class="toolbar">
-
 <button class="tool-btn save"
 onclick="saveMonth()"
 title="حفظ">
@@ -113,19 +104,16 @@ onclick="deleteMonth()"
 title="حذف الشهر">
 🗑️<br>حذف الشهر
 </button>
-
 <button class="tool-btn print"
 onclick="printReport()"
 title="طباعة">
 🖨️<br>تقرير الشهر
 </button>
-
 <button class="tool-btn report"
 onclick="printYearReport()"
 title="التقرير السنوي">
 📊<br>التقرير السنوي
 </button>
-
 <button class="tool-btn reset"
 onclick="resetYear()"
 title="إعادة تعيين">
@@ -133,9 +121,7 @@ title="إعادة تعيين">
 </button>
 <button onclick="exportBackup()">💾 تصدير نسخة احتياطية</button>
 </div>
-
 <div id="msg"></div>
-
 <div class="card">
 <h3>📋 السجل السنوي</h3>
 <table>
@@ -143,14 +129,11 @@ title="إعادة تعيين">
 <tbody id="tbl"></tbody>
 </table>
 </div>
-
 <script>
 const months=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
 months.forEach(m=>month.add(new Option(m,m)));
 month.value=months[new Date().getMonth()];
-
 function key(){return year.value+"_"+month.value;}
-
 function saveMonth(){
 const d = JSON.parse(localStorage.getItem(key()) || "{}");
  d.startBalance = +startBalance.value || d.startBalance || 0;
@@ -171,33 +154,27 @@ document.getElementById(x).value="";
 });
  refresh();
 }
-
 function deleteMonth(){
  localStorage.removeItem(key());
  loadMonth(); refresh();
 }
  function exportBackup() {
   const data = {};
-
   for(let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
     data[key] = localStorage.getItem(key);
   }
-
   const blob = new Blob(
     [JSON.stringify(data, null, 2)],
     { type: "application/json" }
   );
-
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
   a.download = "malrehn-backup.json";
   a.click();
 }
  function addValues(){
-
 let d = JSON.parse(localStorage.getItem(key()) || "{}");
-
 d.commission  = (d.commission  || 0) + (+commission.value  || 0);
 d.commitments = (d.commitments || 0) + (+commitments.value || 0);
 d.education   = (d.education   || 0) + (+education.value   || 0);
@@ -207,14 +184,10 @@ d.restaurants = (d.restaurants || 0) + (+restaurants.value || 0);
 d.other       = (d.other       || 0) + (+other.value       || 0);
 d.extraLoan   = (d.extraLoan   || 0) + (+extraLoan.value   || 0);
 d.saving = (d.saving || 0) + (+saving.value || 0);
-
 d.updated = new Date().toLocaleString();
-
 localStorage.setItem(key(), JSON.stringify(d));
-
 loadMonth();
 refresh();
-
 msg.innerHTML="➕ تمت الإضافة بنجاح";}
 loadMonth();
  month.onchange=loadMonth;
@@ -226,16 +199,12 @@ function loadMonth(){
 });
  refresh();
 }
-
 function refresh(){
 let annualSave = 0, rows = "";
 const status = document.getElementById("status");
 months.forEach(m => {
-
  let d = JSON.parse(localStorage.getItem(year.value + "_" + m) || "{}");
-
  annualSave += (+d.saving || 0);
-
  rows += `<tr>
 <td>${m}</td>
 <td>${d.commission || 0}</td>
@@ -243,18 +212,13 @@ months.forEach(m => {
 <td>${d.saving || 0}</td>
 <td>${d.extraLoan || 0}</td>
 </tr>`;
-
 });
-
 tbl.innerHTML = rows;
 annual.innerText = annualSave;
  tbl.innerHTML=rows;
  annual.innerText=annualSave;
-
  let d = JSON.parse(localStorage.getItem(key()) || "{}");
-
 let income = (+salary.value || 0) + (+d.commission || 0);
-
 let expenses =
 (+maid.value || 0) +
 (+d.commitments || 0) +
@@ -264,16 +228,11 @@ let expenses =
 (+d.restaurants || 0) +
 (+d.other || 0) +
 (+d.extraLoan || 0);
-
 let rem = income - expenses;
-
 remain.innerText = rem;
 endbal.innerText = ((+d.startBalance || 0) + rem);
-
 // حساب الحالة السنوية
-
 // حالة الادخار للشهر الحالي
-
 let savingAmount = (+d.saving || 0);
  if (savingAmount >= 1000){
     status.innerHTML = "🟢 ممتاز";
@@ -287,52 +246,33 @@ else if (savingAmount > 0){
 else{
     status.innerHTML = "🔴 لا يوجد ادخار";
 }
-
-
  const originalLoan = 19752;
-
 let currentLoan = 19752;
-
 months.forEach(m => {
-
  let monthData =
  JSON.parse(localStorage.getItem(year.value+"_"+m) || "{}");
-
  currentLoan -= (+monthData.extraLoan || 0);
-
 });
-
 if(currentLoan < 0) currentLoan = 0;
-
 let paidLoan = originalLoan - currentLoan;
-
 if (paidLoan < 0) paidLoan = 0;
-
 let progress = (paidLoan / originalLoan) * 100;
-
 document.getElementById("loanRemain").innerText =
 currentLoan.toFixed(0);
-
 document.getElementById("loanPaid").innerText =
 paidLoan.toFixed(0);
-
 document.getElementById("loanProgress").innerText =
 progress.toFixed(1) + "%";
 }
 month.onchange=loadMonth;function printReport(){
 window.print();
 }
-
 function printYearReport(){
-
 let rows="";
-
 months.forEach(m=>{
-
 let d=JSON.parse(
 localStorage.getItem(year.value+"_"+m) || "{}"
 );
-
 rows += `
 <tr>
 <td>${m}</td>
@@ -342,11 +282,8 @@ rows += `
 <td>${d.extraLoan || 0}</td>
 </tr>
 `;
-
 });
-
 let w=window.open("");
-
 w.document.write(`
 <html dir="rtl">
 <head>
@@ -361,15 +298,10 @@ text-align:center;
 }
 </style>
 </head>
-
 <body>
-
 <h1>MALREHN</h1>
-
 <h2>التقرير السنوي ${year.value}</h2>
-
 <table>
-
 <tr>
 <th>الشهر</th>
 <th>العمولة</th>
@@ -377,33 +309,23 @@ text-align:center;
 <th>الادخار</th>
 <th>القرض</th>
 </tr>
-
 ${rows}
-
 </table>
-
 <script>
 window.print();
 <\/script>
-
 </body>
 </html>
 `);
-
 w.document.close();
 }
-
 function resetYear(){
-
 if(!confirm("سيتم حذف جميع بيانات السنة الحالية")) return;
-
 months.forEach(m=>{
 localStorage.removeItem(year.value+"_"+m);
 });
-
 loadMonth();
 refresh();
-
 alert("تم حذف بيانات السنة");
 }
 year.onchange=loadMonth;
