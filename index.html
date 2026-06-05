@@ -110,7 +110,9 @@ function deleteMonth(){
  localStorage.removeItem(key());
  loadMonth(); refresh();
 }
-
+month.onchange=loadMonth;
+year.onchange=loadMonth;
+loadMonth();
 function loadMonth(){
  let d=JSON.parse(localStorage.getItem(key())||"{}");
 ["startBalance","commission","commitments","education","fuel","groceries","restaurants","other","extraLoan","saving"].forEach(x=>{
