@@ -55,7 +55,7 @@ box-shadow:0 8px 18px rgba(0,0,0,.18);
 .reset{background:#f59e0b;color:white;}
  .add{background:#16a34a;color:white;}
   #savingChart{
-    display:block;
+margin:20px auto !important;
     margin:20px auto;
     max-width:800px;
 }
@@ -135,7 +135,9 @@ title="إعادة تعيين">
 <div id="msg"></div>
 <div class="card">
 <h3>📋 السجل السنوي</h3>
-<canvas id="savingChart" height="120"></canvas>
+<div class="chart-container">
+  <canvas id="savingChart" height="120"></canvas>
+</div>
 <table>
 <thead><tr><th>الشهر</th><th>العمولة</th><th>الالتزامات</th><th>الادخار</th><th>القرض</th></tr></thead>
 <tbody id="tbl"></tbody>
