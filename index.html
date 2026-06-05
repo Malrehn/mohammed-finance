@@ -213,7 +213,93 @@ paidLoan.toFixed(0);
 document.getElementById("loanProgress").innerText =
 progress.toFixed(1) + "%";
 }
-month.onchange=loadMonth;
+month.onchange=loadMonth;function printReport(){
+window.print();
+}
+
+function printYearReport(){
+
+let rows="";
+
+months.forEach(m=>{
+
+let d=JSON.parse(
+localStorage.getItem(year.value+"_"+m) || "{}"
+);
+
+rows += `
+<tr>
+<td>${m}</td>
+<td>${d.commission || 0}</td>
+<td>${d.commitments || 0}</td>
+<td>${d.saving || 0}</td>
+<td>${d.extraLoan || 0}</td>
+</tr>
+`;
+
+});
+
+let w=window.open("");
+
+w.document.write(`
+<html dir="rtl">
+<head>
+<title>التقرير السنوي</title>
+<style>
+body{font-family:Arial;padding:20px}
+table{width:100%;border-collapse:collapse}
+th,td{
+border:1px solid #ccc;
+padding:8px;
+text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<h1>MALREHN</h1>
+
+<h2>التقرير السنوي ${year.value}</h2>
+
+<table>
+
+<tr>
+<th>الشهر</th>
+<th>العمولة</th>
+<th>الالتزامات</th>
+<th>الادخار</th>
+<th>القرض</th>
+</tr>
+
+${rows}
+
+</table>
+
+<script>
+window.print();
+<\/script>
+
+</body>
+</html>
+`);
+
+w.document.close();
+}
+
+function resetYear(){
+
+if(!confirm("سيتم حذف جميع بيانات السنة الحالية")) return;
+
+months.forEach(m=>{
+localStorage.removeItem(year.value+"_"+m);
+});
+
+loadMonth();
+refresh();
+
+alert("تم حذف بيانات السنة");
+}
 year.onchange=loadMonth;
 loadMonth();
 </script>
