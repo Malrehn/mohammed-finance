@@ -188,7 +188,7 @@ d.groceries   = (d.groceries   || 0) + (+groceries.value   || 0);
 d.restaurants = (d.restaurants || 0) + (+restaurants.value || 0);
 d.other       = (d.other       || 0) + (+other.value       || 0);
 d.extraLoan   = (d.extraLoan   || 0) + (+extraLoan.value   || 0);
-d.saving      = (d.saving      || 0) + (+saving.value      || 0);
+d.saving = (d.saving || 0) + (+saving.value || 0);
 
 d.updated = new Date().toLocaleString();
 
@@ -197,11 +197,12 @@ localStorage.setItem(key(), JSON.stringify(d));
 loadMonth();
 refresh();
 
-msg.innerHTML="➕ تمت الإضافة بنجاح";
+msg.innerHTML="➕ تمت الإضافة بنجاح";}
 }
-month.onchange=loadMonth;
-year.onchange=loadMonth;
+
 loadMonth();
+ month.onchange=loadMonth;
+year.onchange=loadMonth;
 function loadMonth(){
  let d=JSON.parse(localStorage.getItem(key())||"{}");
 ["startBalance","commission","commitments","education","fuel","groceries","restaurants","other","extraLoan","saving"].forEach(x=>{
