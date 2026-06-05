@@ -55,6 +55,7 @@ box-shadow:0 8px 18px rgba(0,0,0,.18);
 .reset{background:#f59e0b;color:white;}
  .add{background:#16a34a;color:white;}
 </style>
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <h1 class="logo">MALREHN</h1>
@@ -124,6 +125,7 @@ title="إعادة تعيين">
 <div id="msg"></div>
 <div class="card">
 <h3>📋 السجل السنوي</h3>
+<canvas id="savingChart" height="120"></canvas>
 <table>
 <thead><tr><th>الشهر</th><th>العمولة</th><th>الالتزامات</th><th>الادخار</th><th>القرض</th></tr></thead>
 <tbody id="tbl"></tbody>
@@ -131,6 +133,7 @@ title="إعادة تعيين">
 </div>
 <script>
 const months=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+ let savingChart;
 months.forEach(m=>month.add(new Option(m,m)));
 month.value=months[new Date().getMonth()];
 function key(){return year.value+"_"+month.value;}
@@ -192,6 +195,33 @@ msg.innerHTML="➕ تمت الإضافة بنجاح";}
 loadMonth();
  month.onchange=loadMonth;
 year.onchange=loadMonth;
+ function drawChart(data){
+
+const ctx=document.getElementById("savingChart");
+
+if(!ctx) return;
+
+if(savingChart){
+savingChart.destroy();
+}
+chartData.push(+d.saving || 0);
+savingChart=new Chart(ctx,{
+type:"line",
+data:{
+labels:months,
+datasets:[{
+label:"الادخار الشهري",
+data:data,
+borderWidth:3,
+tension:0.4
+}]
+},
+options:{
+responsive:true
+}
+});
+
+}
 function loadMonth(){
  let d=JSON.parse(localStorage.getItem(key())||"{}");
 ["startBalance","commission","commitments","education","fuel","groceries","restaurants","other","extraLoan","saving"].forEach(x=>{
@@ -202,6 +232,7 @@ function loadMonth(){
 function refresh(){
 let annualSave = 0, rows = "";
 const status = document.getElementById("status");
+ let chartData=[];
 months.forEach(m => {
  let d = JSON.parse(localStorage.getItem(year.value + "_" + m) || "{}");
  annualSave += (+d.saving || 0);
