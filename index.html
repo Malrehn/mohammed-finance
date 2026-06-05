@@ -234,10 +234,12 @@ data:data,
 borderWidth:3,
 tension:0.4
 }]
-},
-
+    },
+    options:{
+        responsive:true,
+        maintainAspectRatio:false
+    }
 });
-
 }
 function loadMonth(){
  let d=JSON.parse(localStorage.getItem(key())||"{}");
