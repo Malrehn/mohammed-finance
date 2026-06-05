@@ -204,7 +204,6 @@ if(!ctx) return;
 if(savingChart){
 savingChart.destroy();
 }
-chartData.push(+d.saving || 0);
 savingChart=new Chart(ctx,{
 type:"line",
 data:{
@@ -236,6 +235,7 @@ const status = document.getElementById("status");
 months.forEach(m => {
  let d = JSON.parse(localStorage.getItem(year.value + "_" + m) || "{}");
  annualSave += (+d.saving || 0);
+ chartData.push(+d.saving || 0);
  rows += `<tr>
 <td>${m}</td>
 <td>${d.commission || 0}</td>
@@ -248,6 +248,7 @@ tbl.innerHTML = rows;
 annual.innerText = annualSave;
  tbl.innerHTML=rows;
  annual.innerText=annualSave;
+ drawChart(chartData);
  let d = JSON.parse(localStorage.getItem(key()) || "{}");
 let income = (+salary.value || 0) + (+d.commission || 0);
 let expenses =
