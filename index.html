@@ -87,15 +87,39 @@ box-shadow:0 8px 18px rgba(0,0,0,.18);
 <input id="other" type="number" placeholder="📦 أخرى">
 <input id="extraLoan" type="number" placeholder="🏦 مبلغ سداد القرض">
 <input id="saving" type="number" placeholder="🎯 الادخار">
-<button onclick="saveMonth()">💾 حفظ</button>
+<div class="toolbar">
 
-<button onclick="deleteMonth()">🗑️ حذف الشهر</button>
+<button class="tool-btn save"
+onclick="saveMonth()"
+title="حفظ">
+💾
+</button>
 
-<button onclick="printReport()">📄 تقرير الشهر</button>
+<button class="tool-btn delete"
+onclick="deleteMonth()"
+title="حذف الشهر">
+🗑️
+</button>
 
-<button onclick="printYearReport()">📊 التقرير السنوي</button>
+<button class="tool-btn print"
+onclick="printReport()"
+title="طباعة">
+🖨️
+</button>
 
-<button onclick="resetYear()">🔄 إعادة تعيين السنة</button>
+<button class="tool-btn report"
+onclick="printYearReport()"
+title="التقرير السنوي">
+📊
+</button>
+
+<button class="tool-btn reset"
+onclick="resetYear()"
+title="إعادة تعيين">
+🔄
+</button>
+
+</div>
 
 <div id="msg"></div>
 
