@@ -131,7 +131,7 @@ onclick="resetYear()"
 title="إعادة تعيين">
 🔄<br>إعادة تعيين السنة
 </button>
-
+<button onclick="exportBackup()">💾 تصدير نسخة احتياطية</button>
 </div>
 
 <div id="msg"></div>
@@ -175,6 +175,24 @@ document.getElementById(x).value="";
 function deleteMonth(){
  localStorage.removeItem(key());
  loadMonth(); refresh();
+}
+ function exportBackup() {
+  const data = {};
+
+  for(let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    data[key] = localStorage.getItem(key);
+  }
+
+  const blob = new Blob(
+    [JSON.stringify(data, null, 2)],
+    { type: "application/json" }
+  );
+
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "malrehn-backup.json";
+  a.click();
 }
  function addValues(){
 
