@@ -382,18 +382,18 @@ alert("تم حذف بيانات السنة");
 }
 year.onchange=()=>{
   loadMonth();
-  loadFromCloud(key());
+watchCloud(key());
 };
  month.onchange=()=>{
   loadMonth();
-  loadFromCloud(key());
+watchCloud(key());
 };
 loadMonth();
-loadFromCloud(key());
+watchCloud(key());
 </script>
  <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBy4XnYOUelXYkxWDJ1iwnWpcQDlmkWvIA",
@@ -427,6 +427,26 @@ console.log("Cloud Data Loaded", d);
     }
   }
 };
+  window.watchCloud = function(id){
+
+  onSnapshot(doc(db,"months",id),(snap)=>{
+
+    if(!snap.exists()) return;
+
+    const d = snap.data();
+
+    localStorage.setItem(id, JSON.stringify(d));
+
+    refresh();
+
+    if(d.updated){
+      document.getElementById("msg").innerHTML =
+      "☁️ آخر تحديث: " + d.updated;
+    }
+
+  });
+
+}
 </script>
 </body>
 </html>
