@@ -416,6 +416,16 @@ console.log("Cloud Data Loaded", d);
   onSnapshot(doc(db,"months",id),(snap)=>{
     if(!snap.exists()) return;
     const d = snap.data();
+   startBalance.value = d.startBalance || 0;
+commission.value = d.commission || 0;
+commitments.value = d.commitments || 0;
+education.value = d.education || 0;
+fuel.value = d.fuel || 0;
+groceries.value = d.groceries || 0;
+restaurants.value = d.restaurants || 0;
+other.value = d.other || 0;
+extraLoan.value = d.extraLoan || 0;
+saving.value = d.saving || 0;
     localStorage.setItem(id, JSON.stringify(d));
     refresh();
     if(d.updated){
