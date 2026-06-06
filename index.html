@@ -396,7 +396,14 @@ watchCloud(key());
 };
  month.onchange=()=>{
   loadMonth();
+month.onchange=()=>{
+if(auth.currentUser){
+loadMonth();
 watchCloud(key());
+}
+};
+
+// loadMonth();
 };
 loadMonth();
 
