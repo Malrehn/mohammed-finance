@@ -428,6 +428,7 @@ const firebaseConfig = {
   measurementId: "G-19EXHK3T9Z"
 };
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 window.saveToCloud = async function(id,data){
   await setDoc(doc(db,"months",id),data);
