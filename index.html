@@ -433,6 +433,49 @@ const db = getFirestore(app);
 window.saveToCloud = async function(id,data){
   await setDoc(doc(db,"months",id),data);
 };
+  window.saveToCloud = async function(id,data){
+await setDoc(doc(db,"months",id),data);
+};
+
+window.login = async function(){
+
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+
+try{
+
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+}catch(error){
+
+alert("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+
+}
+
+};
+
+onAuthStateChanged(auth,(user)=>{
+
+if(user){
+
+document.getElementById("loginPage").style.display = "none";
+document.getElementById("app").style.display = "block";
+
+}else{
+
+document.getElementById("loginPage").style.display = "block";
+document.getElementById("app").style.display = "none";
+
+}
+
+});
+
+window.loadFromCloud = async function(id){
+  window.loadFromCloud = async function(id){
   window.loadFromCloud = async function(id){
   const snap = await getDoc(doc(db,"months",id));
   if(snap.exists()){
