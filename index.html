@@ -427,7 +427,8 @@ other.value = d.other || 0;
 extraLoan.value = d.extraLoan || 0;
 saving.value = d.saving || 0;
     localStorage.setItem(id, JSON.stringify(d));
-    refresh();
+    loadMonth();
+refresh();
     if(d.updated){
       document.getElementById("msg").innerHTML =
       "☁️ آخر تحديث: " + d.updated;
