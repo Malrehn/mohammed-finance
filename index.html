@@ -418,7 +418,7 @@ window.saveToCloud = async function(id,data){
     const d = snap.data();
 
     localStorage.setItem(id, JSON.stringify(d));
-
+console.log("Cloud Data Loaded", d);
     refresh();
 
     if(d.updated){
