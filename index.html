@@ -513,6 +513,12 @@ document.getElementById("msg").innerHTML =
 }
 });
 }
+  onAuthStateChanged(auth,(user)=>{
+if(user){
+loadFromCloud(key());
+// watchCloud(key());
+}
+});
   watchCloud(key());
 </script>
  </div>
