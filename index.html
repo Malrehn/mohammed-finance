@@ -377,10 +377,17 @@ months.forEach(m=>{
 localStorage.removeItem(year.value+"_"+m);
 });
 loadMonth();
-refresh();
+
 alert("تم حذف بيانات السنة");
 }
-year.onchange=loadMonth;
+year.onchange=()=>{
+  loadMonth();
+  loadFromCloud(key());
+};
+ month.onchange=()=>{
+  loadMonth();
+  loadFromCloud(key());
+};
 loadMonth();
 </script>
  <script type="module">
