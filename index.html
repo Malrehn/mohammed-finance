@@ -12,7 +12,6 @@ input,select,button{width:100%;padding:8px;margin:4px 0}
 table{width:100%;border-collapse:collapse}
 th,td{border:1px solid #ddd;padding:6px;text-align:center}
 @media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}}
- 
  .logo{
 text-align:center;
 font-size:42px;
@@ -29,7 +28,6 @@ flex-wrap:wrap;
 direction:rtl;
 margin-top:15px;
 }
-
 .tool-btn{
 width:140px;
 height:140px;
@@ -61,11 +59,9 @@ box-shadow:0 8px 18px rgba(0,0,0,.18);
     max-width:900px;
     margin:20px auto !important;
 }
-
 .card{
     text-align:center;
 }
-
 .chart-container{
     width:100%;
     display:flex;
@@ -217,11 +213,8 @@ loadMonth();
  month.onchange=loadMonth;
 year.onchange=loadMonth;
  function drawChart(data){
-
 const ctx=document.getElementById("savingChart");
-
 if(!ctx) return;
-
 if(savingChart){
 savingChart.destroy();
 }
@@ -361,7 +354,6 @@ text-align:center;
 <th>الالتزامات</th>
 <th>الادخار</th>
 <th>القرض</th>
-
 </table>
 <script>
 window.print();
@@ -377,7 +369,6 @@ months.forEach(m=>{
 localStorage.removeItem(year.value+"_"+m);
 });
 loadMonth();
-
 alert("تم حذف بيانات السنة");
 }
 year.onchange=()=>{
@@ -394,7 +385,6 @@ watchCloud(key());
  <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyBy4XnYOUelXYkxWDJ1iwnWpcQDlmkWvIA",
   authDomain: "malrehn.firebaseapp.com",
@@ -404,23 +394,18 @@ const firebaseConfig = {
   appId: "1:35526468995:web:78d02f3da96c71859602b6",
   measurementId: "G-19EXHK3T9Z"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
 window.saveToCloud = async function(id,data){
   await setDoc(doc(db,"months",id),data);
 };
   window.loadFromCloud = async function(id){
   const snap = await getDoc(doc(db,"months",id));
-
   if(snap.exists()){
     const d = snap.data();
-
     localStorage.setItem(id, JSON.stringify(d));
 console.log("Cloud Data Loaded", d);
     refresh();
-
     if(d.updated){
       document.getElementById("msg").innerHTML =
       "☁️ آخر تحديث: " + d.updated;
@@ -428,24 +413,16 @@ console.log("Cloud Data Loaded", d);
   }
 };
   window.watchCloud = function(id){
-
   onSnapshot(doc(db,"months",id),(snap)=>{
-
     if(!snap.exists()) return;
-
     const d = snap.data();
-
     localStorage.setItem(id, JSON.stringify(d));
-
     refresh();
-
     if(d.updated){
       document.getElementById("msg").innerHTML =
       "☁️ آخر تحديث: " + d.updated;
     }
-
   });
-
 }
 </script>
 </body>
