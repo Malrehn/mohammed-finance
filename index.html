@@ -299,7 +299,7 @@ remain.innerText = rem;
 endbal.innerText = ((+d.startBalance || 0) + income - expenses);
 // حساب الحالة السنوية
 // حالة الادخار للشهر الحالي
-
+let savingAmount = (+d.saving || 0);
  if (savingAmount >= 1000){
     status.innerHTML = "🟢 ممتاز";
 }
