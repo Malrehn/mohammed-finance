@@ -293,9 +293,13 @@ let expenses =
 (+d.restaurants || 0) +
 (+d.other || 0) +
 (+d.extraLoan || 0);
-let rem = income - expenses;
+let savingAmount = (+d.saving || 0);
+
+let rem = income - expenses - savingAmount;
+
 remain.innerText = rem;
-endbal.innerText = ((+d.startBalance || 0) + rem);
+
+endbal.innerText = ((+d.startBalance || 0) + income - expenses);
 // حساب الحالة السنوية
 // حالة الادخار للشهر الحالي
 let savingAmount = (+d.saving || 0);
