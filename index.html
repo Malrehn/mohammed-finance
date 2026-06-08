@@ -436,6 +436,7 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+  await auth.signOut(); // مؤقتاً للاختب
 const db = getFirestore(app);
 window.saveToCloud = async function(id,data){
   await setDoc(doc(db,"months",id),data);
