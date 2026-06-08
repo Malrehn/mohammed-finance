@@ -169,6 +169,7 @@ title="إعادة تعيين">
 <script>
 const months=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
  let savingChart;
+ const month = document.getElementById("month");
 months.forEach(m=>month.add(new Option(m,m)));
 month.value=months[new Date().getMonth()];
 function key(){return year.value+"_"+month.value;}
