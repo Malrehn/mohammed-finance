@@ -231,7 +231,15 @@ localStorage.setItem(key(), JSON.stringify(d));
 loadMonth();
 refresh();
 msg.innerHTML="➕ تمت الإضافة بنجاح";}
-loadMonth();
+month.onchange = function(){
+  loadMonth();
+  refresh();
+};
+
+year.onchange = function(){
+  loadMonth();
+  refresh();
+};
  month.onchange=loadMonth;
 year.onchange=loadMonth;
  function drawChart(data){
@@ -333,7 +341,11 @@ paidLoan.toFixed(0);
 document.getElementById("loanProgress").innerText =
 progress.toFixed(1) + "%";
 }
-month.onchange=loadMonth;function printReport(){
+month.onchange = loadMonth;
+
+function printReport(){
+  window.print();
+}
 window.print();
 }
 function printYearReport(){
