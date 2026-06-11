@@ -171,7 +171,9 @@ const months=["يناير","فبراير","مارس","أبريل","مايو","ي
  let savingChart;
  const month = document.getElementById("month");
 months.forEach(m=>month.add(new Option(m,m)));
-month.value=months[new Date().getMonth()];
+if(months[new Date().getMonth()]){
+  month.value = months[new Date().getMonth()];
+}
 function key(){return year.value+"_"+month.value;}
 async function saveMonth(){
 const d = JSON.parse(localStorage.getItem(key()) || "{}");
