@@ -341,7 +341,13 @@ paidLoan.toFixed(0);
 document.getElementById("loanProgress").innerText =
 progress.toFixed(1) + "%";
 }
-month.onchange = loadMonth;
+month.addEventListener("change",()=>{
+    loadMonth();
+
+    if(auth.currentUser){
+        watchCloud(key());
+    }
+});
 
 function printReport(){
   window.print();
@@ -452,7 +458,7 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-  await auth.signOut(); // مؤقتاً للاختب
+
 const db = getFirestore(app);
 window.saveToCloud = async function(id,data){
   await setDoc(doc(db,"months",id),data);
@@ -480,7 +486,7 @@ alert("البريد الإلكتروني أو كلمة المرور غير صح�
 
 };
 
-onAuthStateChanged(auth,(user)=>{
+
 
 if(user){
 
@@ -545,7 +551,7 @@ document.getElementById("loginPage").style.display = "none";
 document.getElementById("app").style.display = "block";
 
 loadFromCloud(key());
-// watchCloud(key());
+watchCloud(key());
 
 }else{
 
